@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}Barcha fayllar (Admin){% endblock %}
+
+{% block content %}
+<div class="alert alert-warning">
+    <strong>Admin Panel:</strong>
+    Tizimdagi barcha yuklangan fayllar nazorati.
+</div>
+
+<table class="table table-bordered bg-white shadow-sm">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Egasining ismi</th>
+            <th>Fayl nomi</th>
+            <th>Hajmi</th>
+            <th>Status</th>
+            <th>Amallar</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for file in all_files %}
+        <tr>
+            <td>{{ file.id }}</td>
+            <td><span class="badge bg-info text-dark">{{ file.owner.username }}</span></td>
+            <td>{{ file.title }}</td>
+            <td>{{ file.size }} MB</td>
+            <td>
+                {% if file.is_public %}
+                    <span class="text-success">Ochiq</span>
+                {% else %}
+                    <span class="text-danger">Yopiq</span>
+                {% endif %}
+            </td>
+            <td>
+                <form action="{% url 'admin_delete_file' file.id %}" method="POST" style="display:inline;">
+                    {% csrf_token %}
+                    <button class="btn btn-sm btn-outline-danger">Majburiy o'chirish</button>
+                </form>
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6" class="text-center">Sistemada hali fayllar yo'q.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

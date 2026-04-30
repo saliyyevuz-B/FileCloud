@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card shadow-sm mx-auto" style="max-width: 500px;">
+    <div class="card-header bg-primary text-white">Fayl yuklash</div>
+    <div class="card-body">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label">Sarlavha</label>
+                <input type="text" name="title" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Faylni tanlang</label>
+                <input type="file" name="file" class="form-control" required>
+            </div>
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" name="is_public" id="is_public">
+                <label class="form-check-label" for="is_public">Hammaga ko'rinsinmi? (Public)</label>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Amal qilish muddati (ixtiyoriy)</label>
+                <input type="date" name="expire_date" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-success w-100">Yuklash</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

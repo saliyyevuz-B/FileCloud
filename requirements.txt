@@ -1,0 +1,9 @@
+django
+djangorestframework
+pillow
+#1. requirements.txt done
+#2.settings.py done
+#3.Models done
+#4 admins.py done
+#5serializers & permissions API done
+#6 Main views done

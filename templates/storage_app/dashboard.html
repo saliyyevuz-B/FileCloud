@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>
+        {% if user.role == 'admin' %}
+            Barcha foydalanuvchilar fayllari (Admin)
+        {% else %}
+            Mening fayllarim
+        {% endif %}
+    </h2>
+    <div>
+        {% if user.role == 'admin' %}
+            <a href="{% url 'admin_files' %}" class="btn btn-primary">Admin Panel (Barcha fayllar)</a>
+        {% endif %}
+        <a href="{% url 'upload_file' %}" class="btn btn-success">+ Yangi fayl yuklash</a>
+    </div>
+</div>
+
+<table class="table table-hover bg-white shadow-sm">
+    <thead class="table-dark">
+        <tr>
+            <th>Nomi</th>
+            {% if user.role == 'admin' %}
+                <th>Egasining ismi</th> {% endif %}
+            <th>Hajmi</th>
+            <th>Holati</th>
+            <th>Yuklangan vaqt</th>
+            <th>Amallar</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for file in files %}
+        <tr>
+            <td>{{ file.title }}</td>
+            {% if user.role == 'admin' %}
+                <td><span class="badge bg-info text-dark">{{ file.owner.username }}</span></td>
+            {% endif %}
+            <td>{{ file.size|filesizeformat }}</td>
+            <td>
+                {% if file.is_public %}
+                    <span class="badge bg-success">Public</span>
+                {% else %}
+                    <span class="badge bg-secondary">Private</span>
+                {% endif %}
+            </td>
+            <td>{{ file.created_at|date:"d.m.Y H:i" }}</td>
+            <td>
+                <a href="{% url 'file_detail' file.id %}" class="btn btn-sm btn-info text-white">Batafsil</a>
+                <a href="{% url 'delete_file' file.id %}" class="btn btn-sm btn-danger">O'chirish</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="{% if user.role == 'admin' %}6{% else %}5{% endif %}" class="text-center">Hozircha fayllar yo'q.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

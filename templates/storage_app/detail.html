@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card shadow-sm mx-auto" style="max-width: 600px;">
+    <div class="card-body">
+        <h3 class="card-title">{{ file.title }}</h3>
+        <hr>
+        <p><strong>Fayl hajmi:</strong> {{ file.size }} KB</p>
+        <p><strong>Yuklangan:</strong> {{ file.created_at }}</p>
+        <p><strong>Ko'rishlar soni:</strong> {{ file.views }}</p>
+
+        {% if file.is_public %}
+            <div class="alert alert-info mt-3">
+                <strong>Ulashish uchun havola:</strong><br>
+                <code>http://127.0.0.1:8000/api/public/{{ file.sharedlink_set.first.token }}</code>
+            </div>
+        {% endif %}
+
+        <div class="d-grid gap-2 mt-4">
+            <a href="{{ file.file.url }}" class="btn btn-primary" download>Faylni yuklab olish</a>
+            <form action="{% url 'toggle_public' file.id %}" method="POST">
+                {% csrf_token %}
+                <button class="btn btn-outline-secondary w-100">
+                    {% if file.is_public %}Private qilish{% else %}Public qilish{% endif %}
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
